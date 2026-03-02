@@ -1,23 +1,37 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building the project...1'
-            }
-        }
+  tools {
+    nodejs 'NodeJS'
+  }
 
-        stage('Test') {
-            steps {
-                echo 'Testing the project...'
-            }
-        }
+  stages {
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying the project...'
-            }
-        }
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
+
+    stage('Install') {
+      steps {
+        sh 'npm install'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        sh 'npm test'
+      }
+    }
+  }
+
+  post {
+    success {
+      echo 'All tests passed!'
+    }
+    failure {
+      echo 'Tests failed. Fix before merging!'
+    }
+  }
 }

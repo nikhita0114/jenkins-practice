@@ -1,4 +1,1 @@
-poll test
-poll test 1
-poll test 2
 poll test 3
